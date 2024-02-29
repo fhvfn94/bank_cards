@@ -4,7 +4,7 @@
    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
     <include file="01-changeset-bank-table.xml" relativeToChangelogFile="true"/>
-    <include file="10-changeset-bank-card-table.xml" relativeToChangelogFile="true"/>
-    <include file="20-changeset-credit-card-table.xml" relativeToChangelogFile="true"/>
-    <include file="30-changeset-person-table.xml" relativeToChangelogFile="true"/>
+    <include file="10-changeset-person-table.xml" relativeToChangelogFile="true"/>
+    <include file="20-changeset-bank-card-table.xml" relativeToChangelogFile="true"/>
+
 </databaseChangeLog>

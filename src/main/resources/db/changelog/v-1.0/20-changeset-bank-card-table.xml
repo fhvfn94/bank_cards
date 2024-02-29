@@ -2,26 +2,33 @@
                    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
-    <changeSet id="2.1" author="Ishmukhanbetov Eldar">
+    <changeSet id="3.1" author="Ishmukhanbetov Eldar">
         <createTable tableName="bank_card">
-            <column name="bank_card_id" type="BIGINT" autoIncrement="true">
+            <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="card_number" type="BIGINT"/>
-            <column name="card_expiration_date" type="TIMESTAMP"/>
-            <column name="cvv" type="INTEGER"/>
-            <column name="type_card" type="VARCHAR(255)"/>
-            <column name="id_bank" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
+            <column name="card_expiration_date" type="DATETIME"/>
+            <column name="cvv" type="int"/>
+            <column name="max_limit" type="DOUBLE"/>
+            <column name="type_card" type="VARCHAR(25)"/>
+            <column name="id_bank" type="BIGINT"/>
+            <column name="person" type="BIGINT"/>
         </createTable>
         <addForeignKeyConstraint baseTableName="bank_card"
                                  baseColumnNames="id_bank"
                                  constraintName="id_bank_constraint"
                                  referencedTableName="bank"
                                  referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="bank_card"
+                                 baseColumnNames="person"
+                                 constraintName="id_person_constraint"
+                                 referencedTableName="person"
+                                 referencedColumnNames="id"/>
         <rollback>
             <dropTable tableName="bank_card"/>
         </rollback>
     </changeSet>
 </databaseChangeLog>
+
+

@@ -2,7 +2,7 @@
                    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
-    <changeSet id="4.1" author="Ishmukhanbetov Eldar">
+    <changeSet id="2.1" author="Ishmukhanbetov Eldar">
         <createTable tableName="person">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -17,24 +17,7 @@
             <column name="street" type="VARCHAR(255)"/>
             <column name="house_number" type="INTEGER"/>
             <column name="flat_number" type="INTEGER"/>
-
-            <column name="bank_card_id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="credit_card_id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
         </createTable>
-        <addForeignKeyConstraint baseTableName="person"
-                                 baseColumnNames="bank_card_id"
-                                 constraintName="id_bank_card_constraint"
-                                 referencedTableName="bank_card"
-                                 referencedColumnNames="bank_card_id"/>
-        <addForeignKeyConstraint baseTableName="person"
-                                 baseColumnNames="credit_card_id"
-                                 constraintName="id_credit_card_constraint"
-                                 referencedTableName="credit_card"
-                                 referencedColumnNames="credit_card_id"/>
         <rollback>
             <dropTable tableName="person"/>
         </rollback>

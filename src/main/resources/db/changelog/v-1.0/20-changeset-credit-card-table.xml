@@ -1,3 +1,4 @@
+<!--
 <databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
@@ -16,14 +17,21 @@
             <column name="id_bank" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
+            <column name="person" type="BIGINT"/>
         </createTable>
         <addForeignKeyConstraint baseTableName="credit_card"
                                  baseColumnNames="id_bank"
                                  constraintName="id_bank_constraint"
                                  referencedTableName="bank"
                                  referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="bank_card"
+                                 baseColumnNames="person"
+                                 constraintName="id_person_constraint"
+                                 referencedTableName="person"
+                                 referencedColumnNames="id"/>
         <rollback>
             <dropTable tableName="credit_card"/>
         </rollback>
     </changeSet>
 </databaseChangeLog>
+-->

@@ -3,6 +3,7 @@ package com.banc.card.service;
 import com.banc.card.dto.BankDto;
 import com.banc.card.entity.Bank;
 import com.banc.card.repository.BankRep;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,8 +11,8 @@ import java.util.NoSuchElementException;
 
 @Service
 public class BankService {
-    BankRep bankRep;
-
+    private final BankRep bankRep;
+    @Autowired
     public BankService(BankRep bankRep) {
         this.bankRep = bankRep;
     }

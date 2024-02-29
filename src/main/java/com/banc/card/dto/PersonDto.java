@@ -1,8 +1,6 @@
 package com.banc.card.dto;
 
 
-import com.banc.card.entity.BankCard;
-import com.banc.card.entity.CreditCard;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
