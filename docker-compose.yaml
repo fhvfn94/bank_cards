@@ -1,0 +1,86 @@
+services:
+  postgres:
+    image: postgres:latest
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: bankCard
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: bankCard
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    restart: always
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/misc/ping || exit -1
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    restart: always
+    depends_on:
+      - postgres
+    environment:
+      KC_HTTP_PORT: 9080
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL_HOST: postgres
+      KC_DB_URL_PORT: 5432
+      KC_DB_URL_DATABASE: bankCard
+      KC_DB_USERNAME: bankCard
+      KC_DB_PASSWORD: 1234
+      KC_HEALTH_ENABLED: "true"
+    ports:
+      - "9080:9080"
+    command:
+      - "start-dev"
+    healthcheck:
+      test:
+        [ "CMD-SHELL", "{ exec 3<>/dev/tcp/localhost/9080 && echo -e \"GET /health/ready HTTP/1.1\nhost: localhost:9080\n\" >&3 && timeout --preserve-status 1 cat <&3 | grep -m 1 -q 'status.*UP'; }", ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+  card:
+    image: card:latest
+    build:
+      context: .
+      args:
+        DOCKER_BUILDKIT: 1
+    restart: always
+    environment:
+      POSTGRES_HOST: postgres
+      KEYCLOAK_URL: keycloak:9080
+    depends_on:
+      - postgres
+      - keycloak
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:8080/bank || exit 1
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+volumes:
+  postgres_data:
+  pgadmin_data:
+
